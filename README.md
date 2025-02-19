@@ -1,6 +1,6 @@
 # Anchor-native frankenstein
 
-Anchor program with native entrypoint.
+Example of turning Anchor program to native program by adding native entrypoint and preserving the compatibility with Anchor tests.
 
 ## Usage
 
