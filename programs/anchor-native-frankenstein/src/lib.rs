@@ -33,6 +33,7 @@ fn process_instruction<'info>(
     
     let mut accounts = TestAccounts {
         sender: sender_signer,
+        // 'seeds' constraint won't be applied here
         pda: pda.clone()
     };
 
