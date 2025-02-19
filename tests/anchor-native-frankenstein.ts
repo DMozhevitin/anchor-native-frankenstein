@@ -14,16 +14,31 @@ describe("anchor-native-frankenstein", () => {
 
   const payer = (provider.wallet as NodeWallet).payer;
 
+  function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  before(async () => {
+    // Program needs to be deployed manually
+    const res = require('child_process').execSync(
+      'anchor deploy'
+    );
+    console.log(res.toString());
+
+    await delay(1000);
+  });
+
   it("Test", async () => {
-    // Add your test here.
     const tx = await program.methods
       .test()
-      .accounts({
-        sender: payer.publicKey
+      .accountsPartial({
+        sender: payer.publicKey,
+        pda: payer.publicKey
       })
       .signers([payer])
       .transaction();
 
+    // The transaction will succeed, which means that seeds check doesn't work
     const signature = await sendAndConfirmTransaction(provider.connection, tx, [payer]);
     console.log("Your transaction signature", signature);
   });

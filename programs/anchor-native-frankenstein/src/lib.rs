@@ -25,11 +25,15 @@ fn process_instruction<'info>(
     _instruction_data: &[u8],
 ) -> Result<()> {
     let account_info_iter = &mut accounts.iter();
+
     let sender = next_account_info(account_info_iter)?;
     let sender_signer = Signer::try_from(sender)?;
+
+    let pda = next_account_info(account_info_iter)?;
     
     let mut accounts = TestAccounts {
-        sender: sender_signer
+        sender: sender_signer,
+        pda: pda.clone()
     };
 
     let bumps = <TestAccounts as Bumps>::Bumps::default();
@@ -50,6 +54,8 @@ pub mod anchor_native_frankenstein {
 
     pub fn test(ctx: Context<TestAccounts>) -> Result<()> {
         msg!("Greetings from: {:?}", ctx.program_id);
+        msg!("Sender: {:?}", ctx.accounts.sender.key());
+        msg!("PDA: {:?}", ctx.accounts.pda.key());
         Ok(())
     }
 }
@@ -57,4 +63,8 @@ pub mod anchor_native_frankenstein {
 #[derive(Accounts)]
 pub struct TestAccounts<'info> {
     sender: Signer<'info>,
+
+    /// CHECK:
+    #[account(seeds = ["seed".as_ref()], bump)]
+    pda: AccountInfo<'info>,
 }

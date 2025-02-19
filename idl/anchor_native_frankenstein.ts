@@ -29,6 +29,22 @@ export type AnchorNativeFrankenstein = {
         {
           "name": "sender",
           "signer": true
+        },
+        {
+          "name": "pda",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              }
+            ]
+          }
         }
       ],
       "args": []
