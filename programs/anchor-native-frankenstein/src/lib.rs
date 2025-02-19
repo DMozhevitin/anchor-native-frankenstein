@@ -1,12 +1,17 @@
 use anchor_lang::{prelude::*, solana_program::entrypoint::ProgramResult, Bumps};
 
-declare_id!("3mVwbUjqR2haufMg9kWucfEZ2vMUCtu6D4dnT3ZGqA8h");
+declare_id!("J5jVAGRCPGKbrBKdHpNXtVcH1hi7LfAYnJdnXzVLeVjX");
+
+solana_program::entrypoint!(entry);
 
 pub fn entry<'info>(
-    program_id: &Pubkey,
-    accounts: &'info [AccountInfo<'info>],
+    program_id: &solana_program::pubkey::Pubkey,
+    accounts: &'info [solana_program::account_info::AccountInfo<'info>],
     data: &[u8],
 ) -> ProgramResult {
+    let program_id: &Pubkey = unsafe { std::mem::transmute(program_id) };
+    let accounts: &'info [AccountInfo<'info>] = unsafe { std::mem::transmute(accounts) };
+
     process_instruction(program_id, accounts, data)
         .map_err(|e| {
             e.log();
